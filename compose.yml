@@ -1,0 +1,35 @@
+version: "3"
+
+networks:
+  test:
+    driver: bridge
+
+services:
+  mariadb:
+    image: mariadb:latest
+    networks:
+      - test
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=seafile
+      - MYSQL_USER=foo
+      - MYSQL_PASSWORD=bar
+
+  seafile:
+    image: johannweging/seafile:latest
+    networks:
+      - test
+    environment:
+      - SEAFILE_NAME=test
+      - SEAFILE_ADDRESS=localhost.lan
+      - SEAFILE_ADMIN=admin
+      - SEAFILE_ADMIN_PW=admin
+      - MYSQL_SERVER=mariadb
+      - MYSQL_USER=foo
+      - MYSQL_USER_PASSWORD=bar
+      - CCNET_DB=seafile
+      - SEAFILE_DB=seafile
+      - SEAHUB_DB=seafile
+    ports:
+      - 80:80
+    restart: unless-stopped
