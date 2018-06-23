@@ -1,0 +1,17 @@
+#!/bin/bash 
+
+lockfile-create --use-pid /tmp/lock
+nginx -s stop 
+/opt/haiwen/seafile-server-latest/seahub.sh stop 
+/opt/haiwen/seafile-server-latest/seafile.sh stop 
+
+/opt/haiwen/seafile-server-latest/seaf-gc.sh --rm-deleted
+
+/opt/haiwen/seafile-server-latest/seafile.sh start
+sleep 5
+/opt/haiwen/seafile-server-latest/seahub.sh start
+sleep 5
+
+nginx -c /etc/nginx/nginx.conf
+
+lockfile-remove /tmp/lock

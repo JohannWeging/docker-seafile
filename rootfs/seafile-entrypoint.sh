@@ -50,19 +50,19 @@ done
 ln -sf ${INSTALLPATH} /opt/haiwen/seafile-server-latest
 
 gosu seafile ${INSTALLPATH}/seafile.sh start
-sleep 3
+sleep 5
 gosu seafile ${INSTALLPATH}/seahub.sh start-fastcgi
 sleep 5
 [ ! -e ${SEAFILE_DATA_DIR} ] && gosu seafile python ${INSTALLPATH}/check_init_admin.py
 
 nginx -c /etc/nginx/nginx.conf
 
-while true
-  do
-    for SEAFILE_PROC in "seafile-control" "ccnet-server" "seaf-server" "nginx:"
-    do
-      pkill -0 -f "${SEAFILE_PROC}"
-      sleep 1
-    done
-    sleep 10
+while true; do
+  sleep 10
+  lockfile-create --use-pid --retry 1 /tmp/lock || continue
+  for SEAFILE_PROC in "seafile-control" "ccnet-server" "seaf-server" "nginx:"; do
+    pkill -0 -f "${SEAFILE_PROC}"
+    sleep 1
   done
+  lockfile-remove /tmp/lock
+done

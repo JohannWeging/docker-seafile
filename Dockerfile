@@ -2,12 +2,12 @@ FROM johannweging/base-debian:latest
 
 ARG SEAFILE_VERSION
 
-ENV SEAFILE_VERSION=${SEAFILE_VERSION}
+ENV SEAFILE_VERSION=${TAG_VERSION}
 
 RUN set -x \
 && apt-get install -y python2.7 libpython2.7 python-mysqldb \
       python-setuptools python-imaging python-ldap sqlite3 \
-      python-memcache nginx locales procps \
+      python-memcache nginx locales procps lockfile-progs \
 && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN set -x \
@@ -23,7 +23,7 @@ RUN set -x \
 
 ADD rootfs /
 
-RUN chmod +x /seafile-entrypoint.sh
+RUN chmod +x /seafile-entrypoint.sh /seafile_gc
 
 EXPOSE 80
 
