@@ -1,28 +1,32 @@
 #!/bin/bash 
 
 lockfile-create --use-pid /tmp/lock
+if [[ "$1" != "oninit" ]]; then
 
-echo "stop nginx"
-nginx -s stop 
+  echo "stop nginx"
+  nginx -s stop 
 
-echo "stop seahub"
-gosu seafile /opt/haiwen/seafile-server-latest/seahub.sh stop 
+  echo "stop seahub"
+  gosu seafile /opt/haiwen/seafile-server-latest/seahub.sh stop 
 
-echo "stop seafile"
-gosu seafile /opt/haiwen/seafile-server-latest/seafile.sh stop 
+  echo "stop seafile"
+  gosu seafile /opt/haiwen/seafile-server-latest/seafile.sh stop 
+fi
 
 echo "run gc"
 gosu seafile /opt/haiwen/seafile-server-latest/seaf-gc.sh --rm-deleted
 
-echo "start seafile"
-gosu seafile /opt/haiwen/seafile-server-latest/seafile.sh start
-sleep 5
+if [[ "$1" != "oninit" ]]; then
+  echo "start seafile"
+  gosu seafile /opt/haiwen/seafile-server-latest/seafile.sh start
+  sleep 5
 
-echo "start seahub"
-gosu seafile /opt/haiwen/seafile-server-latest/seahub.sh start-fastcgi
-sleep 5
+  echo "start seahub"
+  gosu seafile /opt/haiwen/seafile-server-latest/seahub.sh start-fastcgi
+  sleep 5
 
-echo "start nginx"
-nginx -c /etc/nginx/nginx.conf
+  echo "start nginx"
+  nginx -c /etc/nginx/nginx.conf
+fi
 
 lockfile-remove /tmp/lock

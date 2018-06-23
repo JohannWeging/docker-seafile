@@ -51,6 +51,10 @@ done
 
 ln -sf ${INSTALLPATH} /opt/haiwen/seafile-server-latest
 
+if [ -f /seafile/seafile_version ]; then
+  /seafile_gc "oninit"
+fi
+
 gosu seafile ${INSTALLPATH}/seafile.sh start
 sleep 5
 gosu seafile ${INSTALLPATH}/seahub.sh start-fastcgi
@@ -58,6 +62,8 @@ sleep 5
 [ ! -e ${SEAFILE_DATA_DIR} ] && gosu seafile python ${INSTALLPATH}/check_init_admin.py
 
 nginx -c /etc/nginx/nginx.conf
+
+echo "${SEAFILE_VERSION}" > /seafile/seafile_version
 
 while true; do
   sleep 10
