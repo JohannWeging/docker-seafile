@@ -16,6 +16,8 @@ export SEAHUB_DATA_DIR="${BASEPATH}/seahub-data"
 export PYTHONPATH=${INSTALLPATH}/seafile/lib/python2.6/site-packages:${INSTALLPATH}/seafile/lib64/python2.6/site-packages:${INSTALLPATH}/seahub:${INSTALLPATH}/seahub/thirdpart:${INSTALLPATH}/seafile/lib/python2.7/site-packages:${INSTALLPATH}/seafile/lib64/python2.7/site-packages:${PYTHONPATH:-}
 export SEAFILE_PORT=${SEAFILE_PORT:-"8082"}
 
+rm -f /tmp/lock.lock
+
 mkdir -p ${DATADIR}
 chown seafile:seafile ${DATADIR}
 
