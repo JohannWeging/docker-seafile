@@ -2,7 +2,7 @@ FROM johannweging/base-debian:latest
 
 ARG SEAFILE_VERSION
 
-ENV SEAFILE_VERSION=${TAG_VERSION}
+ENV SEAFILE_VERSION=${SEAFILE_VERSION}
 
 RUN set -x \
 && apt-get install -y python2.7 libpython2.7 python-mysqldb \

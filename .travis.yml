@@ -5,7 +5,7 @@ services:
 
 env:
   global:
-    - LATEST=6.2
+    - LATEST=6.2.5
   matrix:
     # don't forget to update latest
     - VERSION=6.2.5
@@ -26,8 +26,7 @@ before_script:
   - docker --version
 
 script:
-  - TAG_VERSION=${VERSION%.*}
-  - docker build --build-arg SEAFILE_VERSION=${VERSION} -t johannweging/seafile:${TAG_VERSION} ./
+  - docker build --build-arg SEAFILE_VERSION=${VERSION} -t johannweging/seafile:${VERSION} ./
 
 before_deploy:
   - echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
