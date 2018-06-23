@@ -19,7 +19,7 @@ gosu seafile /opt/haiwen/seafile-server-latest/seafile.sh start
 sleep 5
 
 echo "start seahub"
-gosu seafile /opt/haiwen/seafile-server-latest/seahub.sh start
+gosu seafile /opt/haiwen/seafile-server-latest/seahub.sh start-fastcgi
 sleep 5
 
 echo "start nginx"
